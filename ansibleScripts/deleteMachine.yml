@@ -1,0 +1,14 @@
+
+- hosts: tag_Name_soulswapserver
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_private_key_file: /mnt/f/proyectos/zorzano/claves/mortadelo.pem
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+      - name: Terminate instances that were previously launched
+        ec2:
+          state: 'absent'
+          instance_ids: '{{ ec2.instance_ids }}'
+          region: eu-west-1
