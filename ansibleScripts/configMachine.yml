@@ -9,9 +9,9 @@
 
           #    - name: install python 2
           #raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
- 
+
     - name: Check the monster is alive and well
-      ping: 
+      ping:
 
     - name: ensure nginx is at the latest version
       apt: update_cache=yes name=nginx state=latest
@@ -22,26 +22,7 @@
          name: nginx
          state: started
       become: yes
-    - name: copy the nginx config file and restart nginx
-      copy:
-         src: /home/zorzano/SoulSwap/webserver/config/soulswap.cfg
-         dest: /etc/nginx/sites-available/soulswap.cfg
-      become: yes
-    - name: create symlink
-      file:
-         src: /etc/nginx/sites-available/soulswap.cfg
-         dest: /etc/nginx/sites-enabled/default
-         state: link
-      become: yes
-    - name: copy the content of the web site
-      copy:
-         src: /home/zorzano/SoulSwap/webserver/static-site
-         dest: /home/ubuntu/
-    - name: restart nginx
-      service:
-         name: nginx
-         state: restarted
-      become: yes
+
 
 
       #    - name: Terminate instances that were previously launched

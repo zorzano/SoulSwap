@@ -1,0 +1,44 @@
+
+- hosts: tag_Name_soulswapserver
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_private_key_file: /mnt/f/proyectos/zorzano/claves/mortadelo.pem
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: copy the content of the web site
+      git:
+        repo: 'https://github.com/zorzano/SoulSwap.git'
+        dest: /home/ubuntu/SoulSwap
+        version: feature/basicwebserver2
+
+    - name: copy the nginx config file and restart nginx
+      copy:
+        remote_src: yes
+        src: /home/ubuntu/SoulSwap/webserver/config/soulswap.cfg
+        dest: /etc/nginx/sites-available/soulswap.cfg
+      become: yes
+
+    - name: create symlink
+      file:
+         src: /etc/nginx/sites-available/soulswap.cfg
+         dest: /etc/nginx/sites-enabled/default
+         state: link
+      become: yes
+
+
+    - name: restart nginx
+      service:
+         name: nginx
+         state: restarted
+      become: yes
+
+#      copy:
+#         src: /home/zorzano/SoulSwap/webserver/static-site
+#         dest: /home/ubuntu/
+
+      #    - name: Terminate instances that were previously launched
+      #     ec2:
+      #  state: 'absent'
+      #  instance_ids: '{{ ec2.instance_ids }}'
+      #  region: eu-west-1
