@@ -23,7 +23,26 @@
          state: started
       become: yes
 
+    - name: deploy pip
+      apt: update_cache=yes name=python-pip state=latest
+      become: yes
 
+    - name: deploy virtualenv
+      apt: update_cache=yes name=python-virtualenv state=latest
+      become: yes
+
+
+    - name: deploy gunicorn
+      apt: update_cache=yes name=gunicorn state=latest
+      become: yes
+
+    - name: deploy flask
+      pip name=flask
+
+    - name: simple gunicorn run example
+      gunicorn:
+         app: 'app'
+         chdir: '/home/ubuntu/SoulSwap/webserver/dynamic-site'
 
       #    - name: Terminate instances that were previously launched
       #     ec2:
